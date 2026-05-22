@@ -5,26 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-<meta http-equiv="X-XSS-Protection" content="1; mode=block" />
 <meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta name="robots" content="index, follow, noarchive, nosnippet" />
 <title>msiphone — Hub Premium de iPhones</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-<!-- React 18 + Babel (versões pinadas) -->
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-
-<!-- GSAP + ScrollTrigger -->
-<script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
-<script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
 
 <style>
   :root {
-    /* ===== msiphone Design System ===== */
-    /* Cores — base dark-tech */
     --msi-black: #000000;
     --msi-night: #0a0a0c;
     --msi-coal: #111114;
@@ -34,25 +29,17 @@
     --msi-mist: #b8b8c2;
     --msi-snow: #f5f5f7;
     --msi-white: #ffffff;
-
-    /* Vermelho premium (acento) */
     --msi-red: #FF0020;
     --msi-red-bright: #FF3344;
     --msi-red-deep: #cc0018;
     --msi-red-glow: rgba(255, 0, 32, 0.35);
-
-    /* Card claro (estética luxo) */
     --msi-card: #ffffff;
     --msi-card-ink: #1d1d1f;
     --msi-card-mute: #86868b;
     --msi-card-line: #e5e5ea;
-
-    /* Tipografia */
     --font-display: 'Sora', system-ui, sans-serif;
     --font-body: 'DM Sans', system-ui, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-
-    /* Sombras */
     --shadow-card: 0 30px 60px -20px rgba(0,0,0,0.45), 0 12px 24px -12px rgba(0,0,0,0.25);
     --shadow-card-hover: 0 50px 90px -25px rgba(0,0,0,0.6), 0 20px 40px -15px rgba(0,0,0,0.35);
     --shadow-glow: 0 0 60px var(--msi-red-glow);
@@ -69,12 +56,13 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    user-select: none;
+    -webkit-user-select: none;
   }
   h1, h2, h3, h4, h5 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; margin: 0; }
   button { font-family: inherit; cursor: pointer; }
   a { color: inherit; text-decoration: none; }
 
-  /* Grid tech background — escuro sobre claro */
   .msi-grid-bg {
     position: absolute; inset: 0; pointer-events: none;
     background-image:
@@ -84,7 +72,6 @@
     mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
     -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
   }
-  /* Variante para fundos vermelhos (linhas mais claras) */
   .msi-grid-bg-light {
     position: absolute; inset: 0; pointer-events: none;
     background-image:
@@ -95,36 +82,19 @@
     -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
   }
 
-  /* Feixe de luz vermelho */
-  .msi-beam {
-    position: absolute; pointer-events: none;
-    filter: blur(80px);
-    opacity: 0.55;
-  }
-
-  /* Scroll-reveal helper */
+  .msi-beam { position: absolute; pointer-events: none; filter: blur(80px); opacity: 0.55; }
   .msi-reveal { opacity: 0; transform: translateY(40px); }
-
-  /* Selection */
   ::selection { background: var(--msi-red); color: white; }
-
-  /* Scrollbar */
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { background: #f5f5f7; }
   ::-webkit-scrollbar-thumb { background: #d8d8e0; border-radius: 10px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--msi-red); }
-
-  /* Container */
   .msi-container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
   @media (max-width: 720px) { .msi-container { padding: 0 20px; } }
-
   #root { min-height: 100vh; }
-
-  /* ── Word-reveal animation ── */
   .w-wrap { display: inline-block; overflow: hidden; vertical-align: bottom; }
   .w-wrap > span { display: inline-block; }
 
-  /* ── Keyframes ── */
   @keyframes msi-float-a {
     0%, 100% { transform: translate(0, 0) rotate(0deg); }
     33%       { transform: translate(14px, -20px) rotate(2deg); }
@@ -147,12 +117,9 @@
     50%  { opacity: 1; }
     100% { opacity: 0.6; }
   }
-  @keyframes msi-bar-fill {
-    from { width: 0; }
-  }
+  @keyframes msi-bar-fill { from { width: 0; } }
   .anim-bar { animation: msi-bar-fill 1.2s cubic-bezier(.22,1,.36,1) forwards; }
 
-  /* Toast minimal */
   .msi-toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
     background: var(--msi-card-ink); color: #fff;
@@ -161,25 +128,64 @@
     z-index: 9999; display: flex; align-items: center; gap: 10px;
   }
 </style>
+
+<script>
+(function () {
+  'use strict';
+
+  /* Bloqueia menu de contexto (botão direito) */
+  document.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+    return false;
+  }, true);
+
+  /* Bloqueia atalhos de teclado de inspeção */
+  document.addEventListener('keydown', function (e) {
+    var k = e.key;
+    /* F12 */
+    if (k === 'F12') { e.preventDefault(); e.stopPropagation(); return false; }
+    /* Ctrl/Cmd + Shift + I/J/C/K */
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && ['I','J','C','K'].indexOf(k.toUpperCase()) !== -1) {
+      e.preventDefault(); e.stopPropagation(); return false;
+    }
+    /* Ctrl + U (ver código fonte) */
+    if ((e.ctrlKey || e.metaKey) && k.toLowerCase() === 'u') {
+      e.preventDefault(); return false;
+    }
+    /* Ctrl + S (salvar página) */
+    if ((e.ctrlKey || e.metaKey) && k.toLowerCase() === 's') {
+      e.preventDefault(); return false;
+    }
+  }, true);
+
+  /* Aviso no console */
+  var _c = window.console;
+  if (_c) {
+    setTimeout(function () {
+      _c.clear && _c.clear();
+      _c.log && _c.log(
+        '%c⛔ ATENÇÃO',
+        'color:#FF0020;font-size:32px;font-weight:900;'
+      );
+      _c.log && _c.log(
+        '%cEste é um recurso para desenvolvedores.\nSe alguém pediu para você colar algo aqui, pode ser uma tentativa de fraude.\nNão execute comandos desconhecidos.',
+        'font-size:14px;color:#333;line-height:1.6;'
+      );
+    }, 800);
+  }
+})();
+</script>
 </head>
 <body>
   <div id="root"></div>
 
-  <!-- 1. Dados estáticos -->
   <script type="text/babel" src="src/api/data.jsx"></script>
-  <!-- 2. Utilitários (WhatsApp, validação, sanitização) -->
   <script type="text/babel" src="src/api/helpers.jsx"></script>
-  <!-- 3. Serviços (ProductService, TradeInService, CheckoutService) -->
   <script type="text/babel" src="src/api/services.jsx"></script>
-  <!-- 4. Estado global (CartContext) -->
   <script type="text/babel" src="src/context.jsx"></script>
-  <!-- 5. Hooks reutilizáveis -->
   <script type="text/babel" src="src/hooks.jsx"></script>
-  <!-- 6. Componentes atômicos + ícones -->
   <script type="text/babel" src="src/components/ui.jsx"></script>
-  <!-- 7. Componentes compostos (CartDrawer, FloatingWhatsApp) -->
   <script type="text/babel" src="src/components/widgets.jsx"></script>
-  <!-- 8. Seções da página -->
   <script type="text/babel" src="src/sections/Navbar.jsx"></script>
   <script type="text/babel" src="src/sections/Hero.jsx"></script>
   <script type="text/babel" src="src/sections/ProductGrid.jsx"></script>
@@ -187,7 +193,6 @@
   <script type="text/babel" src="src/sections/Features.jsx"></script>
   <script type="text/babel" src="src/sections/FAQ.jsx"></script>
   <script type="text/babel" src="src/sections/Footer.jsx"></script>
-  <!-- 9. App root -->
   <script type="text/babel" src="src/app.jsx"></script>
 </body>
 </html>

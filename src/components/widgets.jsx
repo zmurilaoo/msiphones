@@ -1,25 +1,11 @@
-const { useState: useStateW } = React;
-
 function CartDrawer() {
-  const { items, total, isOpen, setIsOpen, remove, clear, showToast } = useCart();
-  const [submitting, setSubmitting] = useStateW(false);
-  const [customer, setCustomer] = useStateW({ name: '', email: '', phone: '' });
-  const [errors, setErrors] = useStateW({});
+  const { items, total, isOpen, setIsOpen, remove } = useCart();
 
-  const checkout = async () => {
-    const e = {};
-    if (!customer.name) e.name = 'Informe seu nome';
-    if (!isValidEmail(customer.email)) e.email = 'E-mail inválido';
-    if (!isValidPhone(customer.phone)) e.phone = 'Telefone inválido';
-    setErrors(e);
-    if (Object.keys(e).length) return;
-
-    setSubmitting(true);
-    const order = await CheckoutService.createOrder({ customer, items, total });
-    setSubmitting(false);
-    showToast(`Pedido ${order.orderId} criado`);
-    clear();
-    setIsOpen(false);
+  const openWhatsApp = () => {
+    const lines = items.map((it) => `• ${it.name} – ${formatBRL(it.price)}`).join('\n');
+    const totalLine = items.length > 1 ? `\n\nTotal: ${formatBRL(total)}` : '';
+    const msg = `Olá msiphone! Quero finalizar meu pedido:\n\n${lines}${totalLine}`;
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -100,24 +86,12 @@ function CartDrawer() {
               </span>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 16 }}>
-              <Input dark={false} label="Nome completo" value={customer.name}
-                onChange={(v) => setCustomer((c) => ({ ...c, name: v }))}
-                error={errors.name} placeholder="João Silva" />
-              <Input dark={false} label="E-mail" type="email" value={customer.email}
-                onChange={(v) => setCustomer((c) => ({ ...c, email: v }))}
-                error={errors.email} placeholder="joao@email.com" />
-              <Input dark={false} label="WhatsApp" value={customer.phone}
-                onChange={(v) => setCustomer((c) => ({ ...c, phone: v }))}
-                error={errors.phone} placeholder="(11) 99999-9999" />
-            </div>
-
-            <Button variant="primary" size="lg" full onClick={checkout} disabled={submitting}
-              iconRight={<IconArrow size={16} />}>
-              {submitting ? 'Processando…' : 'Finalizar pedido'}
+            <Button variant="primary" size="lg" full onClick={openWhatsApp}
+              iconRight={<IconWhatsApp size={18} color="#fff" />}>
+              Finalizar pelo WhatsApp
             </Button>
             <div style={{ fontSize: 12, color: 'var(--msi-card-mute)', textAlign: 'center', marginTop: 14, lineHeight: 1.5 }}>
-              Você será redirecionado para o checkout seguro.<br/>Pagamento processado via gateway Java/Spring.
+              Você será direcionado ao WhatsApp para confirmar seu pedido.
             </div>
           </>
         )}
@@ -129,7 +103,7 @@ function CartDrawer() {
 function FloatingWhatsApp() {
   return (
     <a
-      href={buildWhatsAppLink('um aparelho da vitrine')}
+      href={buildWhatsAppLink('um aparelho da vitrine msiphone')}
       target="_blank" rel="noopener noreferrer"
       style={{
         position: 'fixed', bottom: 24, right: 24, zIndex: 80,

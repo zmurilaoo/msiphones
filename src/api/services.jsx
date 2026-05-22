@@ -29,8 +29,11 @@ const TradeInService = {
       usado:                0.65,
       'carcaca-danificada': 0.50,
       'tela-trincada':      0.42,
+      'face-id-defeito':    0.60,
+      'camera-defeito':     0.65,
+      'bateria-inchada':    0.30,
       'nao-liga':           0.22,
-    }[condition] ?? 0.80;
+    }[condition] ?? 0.70;
 
     const value = Math.round((base * battFactor * condFactor) / 50) * 50;
     return { min: Math.round((value * 0.92) / 50) * 50, max: value };

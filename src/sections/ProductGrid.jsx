@@ -283,7 +283,7 @@ function ProductGrid() {
             <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 700, color: '#fff' }}>Não achou o modelo que queria?</div>
             <div style={{ color: 'rgba(255,255,255,0.85)', fontSize: 15, marginTop: 4 }}>Nosso estoque gira diariamente. Manda mensagem que a gente te avisa quando chegar.</div>
           </div>
-          <a href={buildWhatsAppLink('o modelo que estou procurando')} target="_blank" rel="noopener noreferrer">
+          <a href={buildWhatsAppLink('um aparelho específico')} target="_blank" rel="noopener noreferrer">
             <Button variant="light" size="lg" icon={<IconWhatsApp size={16} />}>Falar no WhatsApp</Button>
           </a>
         </div>

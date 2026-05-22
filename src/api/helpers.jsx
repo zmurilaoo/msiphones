@@ -1,9 +1,9 @@
 const fakeDelay = (ms = 280) => new Promise((r) => setTimeout(r, ms));
 
-const WHATSAPP_NUMBER = '5511960175602';
+const WHATSAPP_NUMBER = atob('NTUxMTk2MDE3NTYwMg==');
 
 const buildWhatsAppLink = (modelName) => {
-  const msg = `Olá msiphone, tenho interesse no ${modelName} anunciado no site.`;
+  const msg = `Olá msiphone! Vi no site e tenho interesse: ${modelName}. Pode me ajudar?`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 };
 

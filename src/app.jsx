@@ -32,5 +32,7 @@ function Root() {
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<Root />);
+const rootEl = document.getElementById('root');
+if (rootEl) {
+  ReactDOM.createRoot(rootEl).render(<Root />);
+}

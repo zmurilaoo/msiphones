@@ -5,8 +5,11 @@ const { useState: useStateFAQ, useEffect: useEffectFAQ, useRef: useRefFAQ } = Re
 function WAFAQ({ children }) {
   const words = String(children).trim().split(/\s+/);
   return words.map((w, i) => (
-    <span key={i} className="w-wrap" style={{ marginRight: i < words.length - 1 ? '0.28em' : 0 }}>
-      <span>{w}</span>
+    <span key={i} className="faq-word" style={{
+      display: 'inline-block', overflow: 'hidden', verticalAlign: 'bottom',
+      marginRight: i < words.length - 1 ? '0.28em' : 0,
+    }}>
+      <span style={{ display: 'inline-block' }}>{w}</span>
     </span>
   ));
 }
@@ -165,32 +168,55 @@ function FAQ() {
   const sectionRef = useRefFAQ(null);
 
   useEffectFAQ(() => {
-    if (!window.gsap || !sectionRef.current) return;
+    if (!window.gsap || !window.ScrollTrigger || !sectionRef.current) return;
 
-    const tl = gsap.timeline({
-      scrollTrigger: { trigger: sectionRef.current, start: 'top 68%', once: true },
-    });
+    gsap.registerPlugin(ScrollTrigger);
 
-    tl.from(sectionRef.current.querySelector('.faq-badge'), { opacity: 0, y: 18, duration: 0.55, ease: 'power3.out' })
-      .from(sectionRef.current.querySelectorAll('.faq-h2 .w-wrap > span'), {
-        y: '115%', opacity: 0, duration: 0.82, stagger: 0.055, ease: 'power4.out',
-      }, '-=0.1')
-      .from(sectionRef.current.querySelector('.faq-desc'), { opacity: 0, y: 18, duration: 0.6, ease: 'power3.out' }, '-=0.35')
-      .from(sectionRef.current.querySelector('.faq-cta'), { opacity: 0, y: 14, scale: 0.94, duration: 0.5, ease: 'back.out(1.4)' }, '-=0.35')
-      .from(sectionRef.current.querySelectorAll('.faq-stat'), {
-        opacity: 0, x: -24, duration: 0.55, stagger: 0.1, ease: 'power3.out',
-      }, '-=0.3')
-      .from(sectionRef.current.querySelectorAll('.faq-item'), {
-        opacity: 0, y: 26, duration: 0.6, stagger: 0.09, ease: 'power3.out',
-      }, '-=0.5');
+    const section = sectionRef.current;
 
-    /* Shapes flutuantes */
-    gsap.to('.faq-shape-wrapper', {
-      y: -20, duration: 10, repeat: -1, yoyo: true, ease: 'sine.inOut',
-    });
-    gsap.to('.faq-shape-wrapper-2', {
-      y: 15, duration: 13, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 2,
-    });
+    const ctx = gsap.context(() => {
+      /* shapes flutuantes — independente do scroll */
+      gsap.to('.faq-shape-wrapper',   { y: -20, duration: 10, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+      gsap.to('.faq-shape-wrapper-2', { y: 15,  duration: 13, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 2 });
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top 65%',
+        once: true,
+        onEnter: () => {
+          /* estados iniciais só quando vai animar */
+          gsap.set(section.querySelector('.faq-badge'),                   { opacity: 0, y: 18 });
+          gsap.set(section.querySelectorAll('.faq-h2 .faq-word > span'),  { y: '115%', opacity: 0, rotateX: -35 });
+          gsap.set(section.querySelector('.faq-desc'),                    { opacity: 0, y: 18 });
+          gsap.set(section.querySelector('.faq-cta'),                     { opacity: 0, y: 14, scale: 0.94 });
+          gsap.set(section.querySelectorAll('.faq-stat'),                 { opacity: 0, x: -24 });
+          gsap.set(section.querySelectorAll('.faq-item'),                 { opacity: 0, y: 26 });
+
+          const tl = gsap.timeline();
+
+          tl
+            .to(section.querySelector('.faq-badge'),
+              { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, 0)
+            .to(section.querySelectorAll('.faq-h2 .faq-word > span'), {
+              y: '0%', opacity: 1, rotateX: 0,
+              transformPerspective: 700,
+              duration: 0.82, stagger: 0.055, ease: 'power4.out',
+            }, 0.15)
+            .to(section.querySelector('.faq-desc'),
+              { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.65)
+            .to(section.querySelector('.faq-cta'),
+              { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(1.4)' }, 0.75)
+            .to(section.querySelectorAll('.faq-stat'),
+              { opacity: 1, x: 0, duration: 0.55, stagger: 0.1, ease: 'power3.out' }, 0.85)
+            .to(section.querySelectorAll('.faq-item'),
+              { opacity: 1, y: 0, duration: 0.6, stagger: 0.09, ease: 'power3.out' }, 0.8);
+        },
+      });
+    }, section);
+
+    requestAnimationFrame(() => ScrollTrigger.refresh());
+
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -244,7 +270,7 @@ function FAQ() {
               Não achou sua dúvida? Manda no WhatsApp — consultor real, resposta em minutos.
             </p>
             <div className="faq-cta" style={{ marginTop: 20 }}>
-              <a href={buildWhatsAppLink('uma dúvida')} target="_blank" rel="noopener noreferrer">
+              <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Olá msiphone! Tenho uma dúvida e gostaria de falar com um consultor.')}`} target="_blank" rel="noopener noreferrer">
                 <Button variant="primary" size="md" icon={<IconWhatsApp size={16} />}>Falar com consultor</Button>
               </a>
             </div>

@@ -1,0 +1,22 @@
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options",             "value": "nosniff" },
+        { "key": "X-Frame-Options",                    "value": "DENY" },
+        { "key": "X-XSS-Protection",                   "value": "0" },
+        { "key": "Referrer-Policy",                    "value": "strict-origin-when-cross-origin" },
+        { "key": "X-DNS-Prefetch-Control",             "value": "off" },
+        { "key": "X-Permitted-Cross-Domain-Policies",  "value": "none" },
+        { "key": "Cross-Origin-Opener-Policy",         "value": "same-origin-allow-popups" },
+        { "key": "Cross-Origin-Resource-Policy",       "value": "same-origin" },
+        { "key": "Strict-Transport-Security",          "value": "max-age=63072000; includeSubDomains; preload" },
+        { "key": "Permissions-Policy",                 "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), bluetooth=(), interest-cohort=()" },
+        { "key": "Content-Security-Policy",            "value": "default-src 'self'; script-src 'self' https://unpkg.com 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; worker-src 'none';" }
+      ]
+    }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
+}

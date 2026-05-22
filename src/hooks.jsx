@@ -1,4 +1,4 @@
-const { useEffect, useState: useStateH, useRef, useMemo: useMemoH, useCallback: useCallbackH } = React;
+const { useEffect, useState: useStateH, useRef, useMemo: useMemoH } = React;
 
 function useProducts() {
   const [all, setAll] = useStateH([]);
