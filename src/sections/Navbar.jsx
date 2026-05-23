@@ -110,7 +110,7 @@ function Navbar() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <path d="M6 7h12l-1.5 11a2 2 0 01-2 1.8H9.5a2 2 0 01-2-1.8L6 7zM9 7V5a3 3 0 016 0v2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
             </svg>
-            Carrinho
+            <span className="nav-cart-label">Carrinho</span>
             {items.length > 0 && (
               <span style={{
                 position: 'absolute', top: -6, right: -6,
@@ -120,7 +120,7 @@ function Navbar() {
               }}>{items.length}</span>
             )}
           </button>
-          <Button size="sm" variant="primary"
+          <Button size="sm" variant="primary" className="nav-cta-desktop"
             onClick={() => document.querySelector('#tradein')?.scrollIntoView({ behavior: 'smooth' })}>
             Avaliar meu iPhone
           </Button>
@@ -167,17 +167,23 @@ function Navbar() {
       )}
 
       <style>{`
-        @media (max-width: 900px) { .nav-links { display: none !important; } }
-        .nav-ham { display: none; background: transparent; border: 0; cursor: pointer; padding: 8px; color: var(--msi-card-ink); }
+        .nav-ham { display: none; background: transparent; border: 0; cursor: pointer; padding: 8px; }
         .nav-mobile-overlay { display: none; }
         @media (max-width: 900px) {
+          .nav-links { display: none !important; }
+          .nav-cta-desktop { display: none !important; }
           .nav-ham { display: flex; align-items: center; justify-content: center; }
+          .nav-cart-label { display: none !important; }
           .nav-mobile-overlay {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             position: fixed; inset: 0; background: rgba(255,255,255,0.97);
-            backdrop-filter: blur(16px); z-index: 150; gap: 32px;
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            z-index: 150; gap: 32px;
           }
-          .nav-mobile-overlay a, .nav-mobile-overlay button { font-size: 22px; font-weight: 600; color: var(--msi-card-ink); }
+          .nav-mobile-overlay a, .nav-mobile-overlay button {
+            font-size: 22px; font-weight: 600; color: var(--msi-card-ink);
+            background: transparent; border: 0; cursor: pointer; font-family: inherit;
+          }
         }
       `}</style>
     </nav>
