@@ -277,7 +277,7 @@ function FAQ() {
 
             {/* Stats com counter animado */}
             <div style={{ marginTop: 44, display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <StatCard className="faq-stat" value={2400} label="aparelhos vendidos" suffix="+" />
+              <StatCard className="faq-stat" value={20} label="aparelhos vendidos" suffix="+" />
               <StatCard className="faq-stat" value={98}   label="clientes satisfeitos" suffix="%" />
               <StatCard className="faq-stat" value={4.9}  label="avaliação média" suffix=" ★" />
             </div>

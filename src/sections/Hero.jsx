@@ -64,7 +64,7 @@ function Hero() {
 
     /* ── Counters ── */
     [
-      { sel: '.h-sn0', to: 2400, suffix: '+' },
+      { sel: '.h-sn0', to: 20, suffix: '+' },
       { sel: '.h-sn1', to: 98,   suffix: '%' },
       { sel: '.h-sn2', to: 4.9,  suffix: '★', dec: true },
     ].forEach(({ sel, to, suffix, dec }) => {

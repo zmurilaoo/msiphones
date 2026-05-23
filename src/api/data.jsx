@@ -25,7 +25,7 @@ const MSI_CATALOG = [
     storage: '512GB',
     condition: 'Novo · Lacrado',
     batteryHealth: 100,
-    price: 9299.0,
+    price: 5500.0,
     originalPrice: 10499.0,
     installments: 12,
     isNew: true,
