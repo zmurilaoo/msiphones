@@ -191,18 +191,12 @@
   }
 
   /* ── Detecção por dimensão de janela (DevTools docked) ─── */
+  /* Threshold generoso (200px) evita falso-positivo do chrome mobile */
   setInterval(function () {
-    var wOpen = window.outerWidth - window.innerWidth > 100;
-    var hOpen = window.outerHeight - window.innerHeight > 100;
+    var wOpen = window.outerWidth - window.innerWidth > 160;
+    var hOpen = window.outerHeight - window.innerHeight > 250;
     if (wOpen || hOpen) { _blockPage(); } else { _unblockPage(); }
-  }, 800);
-
-  /* ── Detecção por timing do debugger (DevTools undocked) ── */
-  setInterval(function () {
-    var t = performance.now();
-    debugger; // eslint-disable-line no-debugger
-    if (performance.now() - t > 200) { _blockPage(); }
-  }, 2000);
+  }, 1000);
 
 })();
 </script>
