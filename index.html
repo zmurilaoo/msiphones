@@ -135,46 +135,75 @@
 (function () {
   'use strict';
 
-  /* Bloqueia menu de contexto (botão direito) */
+  /* ── Overlay de bloqueio ao detectar DevTools ─────────── */
+  var _overlay = null;
+  var _blocked = false;
+
+  function _getOverlay() {
+    if (_overlay) return _overlay;
+    _overlay = document.createElement('div');
+    _overlay.style.cssText = 'display:none;position:fixed;inset:0;z-index:2147483647;background:rgba(255,255,255,0.98);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);align-items:center;justify-content:center;flex-direction:column;gap:14px;text-align:center;font-family:system-ui,sans-serif;pointer-events:all;';
+    _overlay.innerHTML = '<div style="font-size:36px">⛔</div><div style="font-size:19px;font-weight:700;color:#1d1d1f">Acesso Restrito</div><div style="font-size:13px;color:#6b6b75;max-width:260px;line-height:1.6">Feche as ferramentas do desenvolvedor para continuar navegando.</div>';
+    (document.body || document.documentElement).appendChild(_overlay);
+    return _overlay;
+  }
+
+  function _blockPage() {
+    if (_blocked) return;
+    _blocked = true;
+    var o = _getOverlay();
+    o.style.display = 'flex';
+    if (document.body) document.body.style.filter = 'blur(10px)';
+  }
+
+  function _unblockPage() {
+    if (!_blocked) return;
+    _blocked = false;
+    if (_overlay) _overlay.style.display = 'none';
+    if (document.body) document.body.style.filter = '';
+  }
+
+  /* ── Bloqueia menu de contexto (botão direito) ─────────── */
   document.addEventListener('contextmenu', function (e) {
-    e.preventDefault();
-    return false;
+    e.preventDefault(); return false;
   }, true);
 
-  /* Bloqueia atalhos de teclado de inspeção */
+  /* ── Bloqueia atalhos de teclado de inspeção ───────────── */
   document.addEventListener('keydown', function (e) {
     var k = e.key;
-    /* F12 */
     if (k === 'F12') { e.preventDefault(); e.stopPropagation(); return false; }
-    /* Ctrl/Cmd + Shift + I/J/C/K */
     if ((e.ctrlKey || e.metaKey) && e.shiftKey && ['I','J','C','K'].indexOf(k.toUpperCase()) !== -1) {
       e.preventDefault(); e.stopPropagation(); return false;
     }
-    /* Ctrl + U (ver código fonte) */
-    if ((e.ctrlKey || e.metaKey) && k.toLowerCase() === 'u') {
-      e.preventDefault(); return false;
-    }
-    /* Ctrl + S (salvar página) */
-    if ((e.ctrlKey || e.metaKey) && k.toLowerCase() === 's') {
-      e.preventDefault(); return false;
-    }
+    if ((e.ctrlKey || e.metaKey) && k.toLowerCase() === 'u') { e.preventDefault(); return false; }
+    if ((e.ctrlKey || e.metaKey) && k.toLowerCase() === 's') { e.preventDefault(); return false; }
   }, true);
 
-  /* Aviso no console */
+  /* ── Aviso no console + limpeza periódica ──────────────── */
   var _c = window.console;
   if (_c) {
     setTimeout(function () {
       _c.clear && _c.clear();
-      _c.log && _c.log(
-        '%c⛔ ATENÇÃO',
-        'color:#FF0020;font-size:32px;font-weight:900;'
-      );
-      _c.log && _c.log(
-        '%cEste é um recurso para desenvolvedores.\nSe alguém pediu para você colar algo aqui, pode ser uma tentativa de fraude.\nNão execute comandos desconhecidos.',
-        'font-size:14px;color:#333;line-height:1.6;'
-      );
+      _c.log && _c.log('%c⛔ ATENÇÃO', 'color:#FF0020;font-size:32px;font-weight:900;');
+      _c.log && _c.log('%cEste é um recurso para desenvolvedores.\nSe alguém pediu para você colar algo aqui, pode ser uma tentativa de fraude.\nNão execute comandos desconhecidos.', 'font-size:14px;color:#333;line-height:1.6;');
     }, 800);
+    setInterval(function () { _c.clear && _c.clear(); }, 4000);
   }
+
+  /* ── Detecção por dimensão de janela (DevTools docked) ─── */
+  setInterval(function () {
+    var wOpen = window.outerWidth - window.innerWidth > 100;
+    var hOpen = window.outerHeight - window.innerHeight > 100;
+    if (wOpen || hOpen) { _blockPage(); } else { _unblockPage(); }
+  }, 800);
+
+  /* ── Detecção por timing do debugger (DevTools undocked) ── */
+  setInterval(function () {
+    var t = performance.now();
+    debugger; // eslint-disable-line no-debugger
+    if (performance.now() - t > 200) { _blockPage(); }
+  }, 2000);
+
 })();
 </script>
 </head>

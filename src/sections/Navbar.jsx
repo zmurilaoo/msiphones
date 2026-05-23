@@ -88,7 +88,7 @@ function Navbar() {
         </div>
 
         <div className="nav-actions" style={{ display: 'flex', alignItems: 'center', gap: 12, opacity: 0 }}>
-          <button onClick={() => setIsOpen(true)} style={{
+          <button className="nav-cart-btn" onClick={() => setIsOpen(true)} style={{
             position: 'relative',
             background: scrolled ? 'transparent' : 'rgba(255,255,255,0.06)',
             border: `1.5px solid ${scrolled ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.2)'}`,
@@ -150,19 +150,32 @@ function Navbar() {
       {/* Mobile fullscreen overlay */}
       {menuOpen && (
         <div className="nav-mobile-overlay">
-          {NAV_LINKS.map(([label, href]) => (
-            <a key={href} href={href} onClick={() => setMenuOpen(false)}>
-              {label}
-            </a>
-          ))}
-          <button
-            onClick={() => {
-              setMenuOpen(false);
-              document.querySelector('#tradein')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-          >
-            Avaliar meu iPhone
+          <button className="nav-overlay-x" onClick={() => setMenuOpen(false)} aria-label="Fechar menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
           </button>
+          <div style={{ marginBottom: 40 }}>
+            <MsiLogo size={24} dark />
+          </div>
+          <div className="nav-overlay-links">
+            {NAV_LINKS.map(([label, href]) => (
+              <a key={href} href={href} className="nav-overlay-link" onClick={() => setMenuOpen(false)}>
+                {label}
+              </a>
+            ))}
+          </div>
+          <div style={{ marginTop: 'auto', paddingTop: 40, width: '100%' }}>
+            <button
+              className="nav-overlay-cta"
+              onClick={() => {
+                setMenuOpen(false);
+                document.querySelector('#tradein')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              Avaliar meu iPhone →
+            </button>
+          </div>
         </div>
       )}
 
@@ -172,17 +185,35 @@ function Navbar() {
         @media (max-width: 900px) {
           .nav-links { display: none !important; }
           .nav-cta-desktop { display: none !important; }
-          .nav-ham { display: flex; align-items: center; justify-content: center; }
           .nav-cart-label { display: none !important; }
+          .nav-cart-btn { padding: 10px !important; border-color: transparent !important; background: transparent !important; }
+          .nav-actions { gap: 2px !important; }
+          .nav-ham { display: flex; align-items: center; justify-content: center; }
           .nav-mobile-overlay {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            position: fixed; inset: 0; background: rgba(255,255,255,0.97);
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            z-index: 150; gap: 32px;
+            display: flex; flex-direction: column; align-items: center;
+            position: fixed; inset: 0; background: #ffffff;
+            z-index: 150; padding: 28px 32px 40px; overflow-y: auto;
           }
-          .nav-mobile-overlay a, .nav-mobile-overlay button {
-            font-size: 22px; font-weight: 600; color: var(--msi-card-ink);
-            background: transparent; border: 0; cursor: pointer; font-family: inherit;
+          .nav-overlay-x {
+            position: absolute; top: 18px; right: 18px;
+            background: transparent; border: 0; cursor: pointer; padding: 10px;
+            color: var(--msi-card-mute); line-height: 0;
+          }
+          .nav-overlay-links { width: 100%; display: flex; flex-direction: column; }
+          .nav-overlay-link {
+            font-size: 26px; font-weight: 600; color: var(--msi-card-ink);
+            padding: 18px 0; width: 100%; text-align: left;
+            border-bottom: 1px solid rgba(0,0,0,0.07);
+            transition: color .18s, padding-left .18s;
+            background: transparent; border-left: 0; border-right: 0; border-top: 0;
+          }
+          .nav-overlay-link:last-child { border-bottom: 1px solid rgba(0,0,0,0.07); }
+          .nav-overlay-link:active { color: var(--msi-red); padding-left: 6px; }
+          .nav-overlay-cta {
+            width: 100%; padding: 18px; border-radius: 16px;
+            background: var(--msi-red); color: #fff;
+            font-size: 17px; font-weight: 700; border: 0; cursor: pointer;
+            font-family: inherit; letter-spacing: -0.01em;
           }
         }
       `}</style>
