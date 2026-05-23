@@ -20,8 +20,8 @@ function CartDrawer() {
         }}
       />
 
-      <aside style={{
-        position: 'fixed', top: 0, right: 0, bottom: 0, width: 'min(460px, 100vw)',
+      <aside className="cart-drawer" style={{
+        position: 'fixed', top: 0, right: 0, bottom: 0, width: 'min(460px, 100dvw)',
         background: '#ffffff',
         borderLeft: '1px solid rgba(0,0,0,0.08)',
         transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
@@ -96,6 +96,11 @@ function CartDrawer() {
           </>
         )}
       </aside>
+      <style>{`
+        @media (max-width: 520px) {
+          .cart-drawer { padding: 20px !important; }
+        }
+      `}</style>
     </>
   );
 }

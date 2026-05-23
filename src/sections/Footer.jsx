@@ -68,6 +68,13 @@ function Footer() {
           .footer-grid { grid-template-columns: 1fr 1fr !important; }
           .footer-grid > div:first-child { grid-column: 1 / -1; }
         }
+        @media (max-width: 768px) {
+          .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 28px !important; }
+          .footer-grid > div:first-child { grid-column: 1 / -1 !important; }
+        }
+        @media (max-width: 480px) {
+          .footer-grid { grid-template-columns: 1fr !important; }
+        }
         @keyframes msi-shimmer {
           0%, 100% { opacity: 0.65; }
           50%       { opacity: 1; }

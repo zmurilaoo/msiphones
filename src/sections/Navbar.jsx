@@ -1,9 +1,11 @@
 /* src/sections/Navbar.jsx */
 const { useState, useEffect, useRef } = React;
+const { useState: useStateNav } = React;
 
 function Navbar() {
   const { items, setIsOpen } = useCart();
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useStateNav(false);
   const navRef = useRef(null);
 
   useEffect(() => {
@@ -32,6 +34,13 @@ function Navbar() {
   const linkColor = scrolled ? 'var(--msi-card-mute)' : 'rgba(255,255,255,0.75)';
   const linkHover = scrolled ? 'var(--msi-red)' : '#fff';
 
+  const NAV_LINKS = [
+    ['Comprar',          '#vitrine'],
+    ['Trade-in',         '#tradein'],
+    ['Por que msiphone', '#features'],
+    ['Dúvidas',          '#faq'],
+  ];
+
   return (
     <nav ref={navRef} style={{
       position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
@@ -49,12 +58,7 @@ function Navbar() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 28 }} className="nav-links">
-          {[
-            ['Comprar',          '#vitrine'],
-            ['Trade-in',         '#tradein'],
-            ['Por que msiphone', '#features'],
-            ['Dúvidas',          '#faq'],
-          ].map(([label, href]) => (
+          {NAV_LINKS.map(([label, href]) => (
             <a key={href} href={href}
               className="nav-link"
               style={{
@@ -120,11 +124,61 @@ function Navbar() {
             onClick={() => document.querySelector('#tradein')?.scrollIntoView({ behavior: 'smooth' })}>
             Avaliar meu iPhone
           </Button>
+
+          {/* Hamburger button — visible only on mobile */}
+          <button
+            className="nav-ham"
+            onClick={() => setMenuOpen(o => !o)}
+            aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
+            style={{ color: scrolled ? 'var(--msi-card-ink)' : 'rgba(255,255,255,0.9)' }}
+          >
+            {menuOpen ? (
+              /* X icon */
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+            ) : (
+              /* Hamburger icon */
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+            )}
+          </button>
         </div>
       </div>
 
+      {/* Mobile fullscreen overlay */}
+      {menuOpen && (
+        <div className="nav-mobile-overlay">
+          {NAV_LINKS.map(([label, href]) => (
+            <a key={href} href={href} onClick={() => setMenuOpen(false)}>
+              {label}
+            </a>
+          ))}
+          <button
+            onClick={() => {
+              setMenuOpen(false);
+              document.querySelector('#tradein')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
+            Avaliar meu iPhone
+          </button>
+        </div>
+      )}
+
       <style>{`
         @media (max-width: 900px) { .nav-links { display: none !important; } }
+        .nav-ham { display: none; background: transparent; border: 0; cursor: pointer; padding: 8px; color: var(--msi-card-ink); }
+        .nav-mobile-overlay { display: none; }
+        @media (max-width: 900px) {
+          .nav-ham { display: flex; align-items: center; justify-content: center; }
+          .nav-mobile-overlay {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            position: fixed; inset: 0; background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(16px); z-index: 150; gap: 32px;
+          }
+          .nav-mobile-overlay a, .nav-mobile-overlay button { font-size: 22px; font-weight: 600; color: var(--msi-card-ink); }
+        }
       `}</style>
     </nav>
   );

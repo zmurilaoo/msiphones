@@ -294,7 +294,11 @@ function FAQ() {
 
       <style>{`
         @media (max-width: 900px) {
-          .faq-grid { grid-template-columns: 1fr !important; gap: 36px !important; }
+          .faq-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+          .faq-shape-wrapper, .faq-shape-wrapper-2 { display: none !important; }
+        }
+        @media (max-width: 768px) {
+          .faq-h2 { font-size: clamp(28px, 6vw, 40px) !important; }
         }
       `}</style>
     </section>

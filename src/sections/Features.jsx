@@ -274,7 +274,12 @@ function Features() {
           to { transform: scale(26) translate(-50%, -50%); opacity: 0; }
         }
         @media (max-width: 900px) {
+          #features .msi-container > div:last-child { grid-template-columns: 1fr 1fr !important; }
+          .feat-shapes-l, .feat-shapes-r { display: none !important; }
+        }
+        @media (max-width: 600px) {
           #features .msi-container > div:last-child { grid-template-columns: 1fr !important; }
+          .feat-card { padding: 28px 20px !important; min-height: 220px !important; }
         }
       `}</style>
     </section>

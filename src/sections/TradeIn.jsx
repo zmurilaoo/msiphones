@@ -330,7 +330,13 @@ function TradeIn() {
           to   { opacity: 1; transform: translateY(0)    scale(1);    }
         }
         @media (max-width: 900px) {
-          .tradein-grid { grid-template-columns: 1fr !important; gap: 36px !important; }
+          .tradein-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+          .ti-form { padding: 24px !important; border-radius: 20px !important; }
+          .ti-badge { margin-bottom: 12px !important; }
+        }
+        @media (max-width: 768px) {
+          .ti-form { padding: 20px !important; }
+          .ti-aurora-1, .ti-aurora-2, .ti-aurora-3 { display: none !important; }
         }
       `}</style>
     </section>

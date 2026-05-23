@@ -126,7 +126,7 @@ function Hero() {
   const FONT = '"Space Grotesk", var(--font-display)';
 
   return (
-    <section ref={heroRef} style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden', background: '#000', display: 'flex', alignItems: 'center' }}>
+    <section ref={heroRef} className="h-hero" style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden', background: '#000', display: 'flex', alignItems: 'center' }}>
 
       {/* Vídeo */}
       <video autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, filter: 'contrast(1.1) saturate(0.7) brightness(0.44)' }}>
@@ -213,7 +213,7 @@ function Hero() {
             Todo aparelho diagnosticado em 47 pontos. Bateria garantida, IMEI verificado e laudo técnico incluso. Compra, venda ou troca — sempre no melhor preço.
           </p>
 
-          <div className="h-cta-row" style={{ marginTop: 36, display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+          <div className="h-cta-row h-cta-group" style={{ marginTop: 36, display: 'flex', gap: 14, flexWrap: 'wrap' }}>
             <a href="#vitrine">
               <Button variant="primary" size="lg" iconRight={<IconArrow size={16} />}>Ver vitrine</Button>
             </a>
@@ -223,14 +223,14 @@ function Hero() {
           </div>
 
           {/* Stats */}
-          <div style={{ marginTop: 52, display: 'flex', gap: 44, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+          <div className="h-stats" style={{ marginTop: 52, display: 'flex', gap: 44, flexWrap: 'wrap', alignItems: 'flex-start' }}>
             {[
               { cls: 'h-sn0', label: 'Aparelhos vendidos' },
               { cls: 'h-sn1', label: 'Clientes satisfeitos' },
               { cls: 'h-sn2', label: 'Avaliação média' },
             ].map(({ cls, label }, i) => (
               <div key={i} className="h-stat">
-                <div style={{ fontFamily: FONT, fontWeight: 700, fontSize: 38, color: '#fff', letterSpacing: '-0.025em', lineHeight: 1 }}>
+                <div className="h-stat-num" style={{ fontFamily: FONT, fontWeight: 700, fontSize: 38, color: '#fff', letterSpacing: '-0.025em', lineHeight: 1 }}>
                   <span className={cls}>0</span>
                 </div>
                 <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.42)', letterSpacing: '0.1em', textTransform: 'uppercase', marginTop: 6, fontFamily: 'var(--font-mono)' }}>{label}</div>
@@ -252,6 +252,19 @@ function Hero() {
         @keyframes h-scroll-dot {
           0%,100% { transform: translateY(0); opacity: 1; }
           55%      { transform: translateY(11px); opacity: 0.15; }
+        }
+        @media (max-width: 768px) {
+          .h-hero { padding: 80px 0 60px !important; }
+          .h-orb-a, .h-orb-b, .h-orb-c { display: none !important; }
+          .h-stats { flex-direction: column !important; gap: 16px !important; align-items: flex-start !important; }
+          .h-stat-num { font-size: 28px !important; }
+          .h-cta-group { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; }
+          .h-badge { margin-bottom: 16px !important; }
+          .h-scroll-hint { display: none !important; }
+        }
+        @media (max-width: 480px) {
+          .h-cta-group { width: 100% !important; }
+          .h-cta-group > * { width: 100% !important; justify-content: center !important; }
         }
       `}</style>
     </section>

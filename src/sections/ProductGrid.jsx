@@ -233,11 +233,11 @@ function ProductGrid() {
       </div>
 
       <div className="msi-container" style={{ position: 'relative' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 48, flexWrap: 'wrap', gap: 24 }}>
+        <div className="pg-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 48, flexWrap: 'wrap', gap: 24 }}>
           <div style={{ maxWidth: 600 }}>
             <span className="pg-badge"><Badge tone="cardRed">VITRINE · ATUALIZADA HOJE</Badge></span>
             <h2 style={{ fontSize: 'clamp(36px, 4.5vw, 60px)', marginTop: 18, lineHeight: 1.08, color: 'var(--msi-card-ink)' }}>
-              <WA>Aparelhos com</WA>{' '}
+              <WA>Aparelhos com</WA>{' '}
               <span style={{ color: 'var(--msi-red)' }}><WA>laudo técnico</WA></span>
               <br />
               <WA>e cara de novo.</WA>
@@ -247,7 +247,7 @@ function ProductGrid() {
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <div className="pg-filters" style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {[['all', 'Todos'], ['new', 'Lacrados'], ['used', 'Seminovos']].map(([k, label]) => (
               <button key={k} onClick={() => setFilter((f) => ({ ...f, condition: k }))}
                 className="pg-filter-btn"
@@ -269,7 +269,7 @@ function ProductGrid() {
         {loading ? (
           <div style={{ textAlign: 'center', color: 'var(--msi-card-mute)', padding: 80 }}>Carregando vitrine…</div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 24 }}>
+          <div className="pg-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(300px, 100%), 1fr))', gap: 24 }}>
             {products.map((p, i) => (
               <div key={p.id} className="msi-product-card">
                 <ProductCard product={p} idx={i} />
@@ -278,7 +278,7 @@ function ProductGrid() {
           </div>
         )}
 
-        <div className="msi-reveal" style={{ marginTop: 48, padding: '28px 32px', borderRadius: 24, background: 'var(--msi-red)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 24, flexWrap: 'wrap', boxShadow: '0 20px 50px -15px rgba(255,0,32,0.45)' }}>
+        <div className="msi-reveal pg-reveal-box" style={{ marginTop: 48, padding: '28px 32px', borderRadius: 24, background: 'var(--msi-red)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 24, flexWrap: 'wrap', boxShadow: '0 20px 50px -15px rgba(255,0,32,0.45)' }}>
           <div>
             <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 700, color: '#fff' }}>Não achou o modelo que queria?</div>
             <div style={{ color: 'rgba(255,255,255,0.85)', fontSize: 15, marginTop: 4 }}>Nosso estoque gira diariamente. Manda mensagem que a gente te avisa quando chegar.</div>
@@ -288,6 +288,19 @@ function ProductGrid() {
           </a>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .pg-grid { grid-template-columns: 1fr !important; }
+          .pg-filters { gap: 8px !important; flex-wrap: wrap !important; }
+          .pg-filter-btn { padding: 8px 14px !important; font-size: 12.5px !important; }
+          .pg-header { margin-bottom: 32px !important; }
+          .pg-reveal-box { flex-direction: column !important; gap: 14px !important; text-align: center !important; align-items: center !important; }
+        }
+        @media (max-width: 480px) {
+          .pg-grid { gap: 16px !important; }
+        }
+      `}</style>
     </section>
   );
 }
